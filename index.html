@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Board Game Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .banner h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .banner p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .card p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .btn-open {
+            display: inline-block;
+            background-color: #667eea;
+            color: white;
+            padding: 10px 25px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .btn-open:hover {
+            background-color: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <h1>🎲 Welcome to My Web</h1>
+        <p>Your ultimate hub to help you play board games</p>
+    </div>
+
+    <div class="container">
+        <div class="cards-grid">
+            <div class="card">
+                <h2>Game Finder</h2>
+                <p>Discover and explore a wide variety of board games. Find the perfect game for your next game night.</p>
+                <a href="#" class="btn-open">Open App</a>
+            </div>
+
+            <div class="card">
+                <h2>Rules Guide</h2>
+                <p>Learn the rules and strategies for your favorite board games. Master the gameplay with our comprehensive guides.</p>
+                <a href="#" class="btn-open">Open App</a>
+            </div>
+
+            <div class="card">
+                <h2>Game Timer</h2>
+                <p>Keep track of game rounds and turns. Use our timer to manage game sessions efficiently.</p>
+                <a href="#" class="btn-open">Open App</a>
+            </div>
+
+            <div class="card">
+                <h2>Score Board</h2>
+                <p>Track player scores and rankings. Keep detailed records of your game matches and tournaments.</p>
+                <a href="#" class="btn-open">Open App</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6 Nimmt Counter</title>
+  <style>
+    :root {
+      --bg: #1f2937;
+      --panel: #111827;
+      --button: #e5e7eb;
+      --button-picked: #22c55e;
+      --button-text: #111827;
+      --button-picked-text: #ffffff;
+      --accent: #f59e0b;
+      --reset: #ef4444;
+      --reset-text: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+    }
+
+    .app {
+      width: min(1200px, 100%);
+      background: var(--panel);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.4rem, 2vw, 2rem);
+    }
+
+    .total {
+      background: rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .total span {
+      color: var(--accent);
+      font-size: 1.5rem;
+      margin-left: 8px;
+    }
+
+    .reset-btn {
+      background: var(--reset);
+      color: var(--reset-text);
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    .reset-btn:hover {
+      transform: translateY(-1px);
+      opacity: 0.95;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(10, minmax(70px, 1fr));
+      gap: 10px;
+    }
+
+    .card {
+      position: relative;
+      min-height: 82px;
+      border: none;
+      border-radius: 12px;
+      background: var(--button);
+      color: var(--button-text);
+      font-weight: 700;
+      font-size: 1.15rem;
+      cursor: pointer;
+      padding: 8px 6px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: inset 0 0 0 2px rgba(0,0,0,0.08);
+    }
+
+    .card:hover {
+      transform: translateY(-1px);
+    }
+
+    .card.picked {
+      background: var(--button-picked);
+      color: var(--button-picked-text);
+      box-shadow: 0 0 0 2px rgba(34,197,94,0.35), inset 0 0 0 2px rgba(255,255,255,0.15);
+    }
+
+    .card-number {
+      font-size: 1.4rem;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .card-points {
+      display: inline-block;
+      background: rgba(0,0,0,0.14);
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+
+    .card.picked .card-points {
+      background: rgba(255,255,255,0.18);
+    }
+
+    @media (max-width: 760px) {
+      .grid {
+        grid-template-columns: repeat(4, minmax(70px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="topbar">
+      <h1>6 Nimmt Score Counter</h1>
+      <div class="total">Total points: <span id="totalPoints">0</span></div>
+      <button class="reset-btn" id="resetBtn" type="button">Reset</button>
+    </div>
+
+    <div class="grid" id="cardGrid"></div>
+  </div>
+
+  <script>
+    const cardGrid = document.getElementById('cardGrid');
+    const totalPointsEl = document.getElementById('totalPoints');
+    const resetBtn = document.getElementById('resetBtn');
+
+    function getCardPoints(number) {
+      const endsIn5 = number % 10 === 5;
+      const endsIn0 = number % 10 === 0;
+      const multipleOf11 = number % 11 === 0;
+
+      if (number === 55) return 7;
+      if (endsIn5) return 2;
+      if (endsIn0) return 3;
+      if (multipleOf11) return 5;
+      return 1;
+    }
+
+    const picked = new Set();
+
+    function updateTotal() {
+      let total = 0;
+      picked.forEach((number) => {
+        total += getCardPoints(number);
+      });
+      totalPointsEl.textContent = total;
+    }
+
+    function toggleCard(number) {
+      if (picked.has(number)) {
+        picked.delete(number);
+      } else {
+        picked.add(number);
+      }
+
+      const button = document.querySelector(`button[data-number="${number}"]`);
+      if (button) {
+        button.classList.toggle('picked', picked.has(number));
+      }
+
+      updateTotal();
+    }
+
+    for (let number = 1; number <= 104; number++) {
+      const card = document.createElement('button');
+      card.type = 'button';
+      card.className = 'card';
+      card.dataset.number = String(number);
+      card.setAttribute('aria-label', `Card ${number}`);
+      card.innerHTML = `
+        <span class="card-number">${number}</span>
+        <span class="card-points">${getCardPoints(number)} pts</span>
+      `;
+      card.addEventListener('click', () => toggleCard(number));
+      cardGrid.appendChild(card);
+    }
+
+    resetBtn.addEventListener('click', () => {
+      picked.clear();
+      document.querySelectorAll('.card').forEach((button) => {
+        button.classList.remove('picked');
+      });
+      updateTotal();
+    });
+
+    updateTotal();
+  </script>
+</body>
+</html>
